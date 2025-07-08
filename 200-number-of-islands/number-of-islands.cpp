@@ -1,28 +1,50 @@
 class Solution {
 public:
-    bool valid(int i, int j, int r, int c) { return i >= 0 && i < r && j >= 0 && j < c; }
+    bool isValid(int i, int j, int r, int c) {
+        return i < r && i >= 0 && j >= 0 && j < c;
+    }
+
+    void bfs(int i, int j, vector<vector<bool>>& visited,
+             vector<vector<char>>& grid) {
+        queue<pair<int, int>> q;
+        q.push({i, j});
+        visited[i][j] = 1;
+        while (!q.empty()) {
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            if (isValid(r + 1, c, grid.size(), grid[0].size()) &&
+                grid[r + 1][c] == '1' && !visited[r + 1][c]) {
+                q.push({r + 1, c});
+                visited[r + 1][c] = 1;
+            }
+            if (isValid(r - 1, c, grid.size(), grid[0].size()) &&
+                grid[r - 1][c] == '1' && !visited[r - 1][c]) {
+                q.push({r - 1, c});
+                visited[r - 1][c] = 1;
+            }
+            if (isValid(r, c + 1, grid.size(), grid[0].size()) &&
+                grid[r][c + 1] == '1' && !visited[r][c + 1]) {
+                q.push({r, c + 1});
+                visited[r][c + 1] = 1;
+            }
+            if (isValid(r, c - 1, grid.size(), grid[0].size()) &&
+                grid[r][c - 1] == '1' && !visited[r][c - 1]) {
+                q.push({r, c - 1});
+                visited[r][c - 1] = 1;
+            }
+        }
+    }
 
     int numIslands(vector<vector<char>>& grid) {
-        int r = grid.size(), c = grid[0].size(), ans = 0;
-        queue<pair<int, int>> q;
-        int rows[4] = {0, 0, -1, 1};
-        int cols[4] = {-1, 1, 0, 0};
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                if(grid[i][j] == '1') {
-                    grid[i][j] = '0';
+        vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), 0));
+        int ans = 0;
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[0].size(); j++) {
+                if (!visited[i][j] && grid[i][j] == '1') {
                     ans++;
-                    q.push(make_pair(i, j));
+                    bfs(i, j, visited, grid);
                 }
-                while(!q.empty()) {
-                    int row = q.front().first, col = q.front().second;
-                    q.pop();
-                    for(int k = 0; k < 4; k++) if(valid(row + rows[k], col + cols[k], r, c)) 
-                        if(grid[row + rows[k]][col + cols[k]] == '1') {
-                            grid[row + rows[k]][col + cols[k]] = '0';
-                            q.push(make_pair(row + rows[k], col + cols[k]));
-                        }
-                } 
             }
         }
         return ans;
