@@ -15,11 +15,10 @@ public:
         queue<TreeNode*> q;
         q.push(root);
         vector<int> sizes;
-        int tmp = 1;
+        int tmp = 1, s;
         while(!q.empty()) {
             sizes.push_back(tmp);
-            tmp = 0;
-            int s = q.size();
+            tmp = 0, s = q.size();
             bool miss = false;
             for(int i = 0; i < s; i++) {
                 TreeNode* node = q.front();
@@ -38,8 +37,7 @@ public:
                 }
             }
         } 
-        for(int i = 1; i < sizes.size() - 1; i++) 
-            if(sizes[i] / 2 != sizes[i - 1]) return false;
+        for(int i = 1; i < sizes.size() - 1; i++) if(sizes[i] / 2 != sizes[i - 1]) return false;
         return true;
     }
 };
