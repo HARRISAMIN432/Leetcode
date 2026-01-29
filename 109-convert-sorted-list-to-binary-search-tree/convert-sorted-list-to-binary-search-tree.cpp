@@ -33,10 +33,9 @@ public:
     TreeNode* sortedListToBST(ListNode* head) {
         if(!head) return NULL;
         vector<int> nums;
-        ListNode* tmp = head;
-        while(tmp) {
-            nums.push_back(tmp->val);
-            tmp = tmp->next;
+        while(head) {
+            nums.push_back(head->val);
+            head = head->next;
         }
         return bst(0, nums.size() - 1, nums);
     }
