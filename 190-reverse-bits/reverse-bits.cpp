@@ -2,9 +2,7 @@ class Solution {
 public:
     int reverseBits(int n) {
         string bin = DecToBin(n);
-        reverse(bin.begin(), bin.end());
-        for(int i = bin.size(); i < 32; i++) bin += '0';
-        reverse(bin.begin(), bin.end());
+        while(bin.size() != 32) bin = '0' + bin;
         reverse(bin.begin(), bin.end());
         return BinToDec(bin);
     }
