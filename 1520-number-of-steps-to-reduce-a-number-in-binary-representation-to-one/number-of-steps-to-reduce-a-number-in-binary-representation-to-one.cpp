@@ -4,8 +4,7 @@ public:
         if(count(s.begin(), s.end(), '1') == 1 && s[s.size() - 1] == '1') return 0;
         int steps = 0;
         while(count(s.begin(), s.end(), '1') != 1 || s[s.size() - 1] != '1') {
-            if(s.back() == '1') addOne(s);
-            else divideBy2(s);
+            (s.back() == '1') ? addOne(s) : divideBy2(s);
             steps++;
         }
         return steps;
