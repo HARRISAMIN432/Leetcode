@@ -4,22 +4,19 @@ public:
         sort(words.begin(), words.end(), [](const string &a, const string &b) {
             return a.size() < b.size();
         });
-        vector<vector<int>> dp(words.size(), vector<int>(words.size(), -1));
-        return f(0, -1, words, dp);
+        vector<vector<int>> dp(words.size() + 1, vector<int>(words.size() + 2, 0));
+        for(int i = words.size() - 1; i >= 0; i--) {
+            for(int prev = i; prev >= -1; prev--) {
+                int skip = dp[i + 1][prev + 1], take = 0;
+                if ((prev == -1) || (words[i].size() == words[prev].size() + 1 && compare(words[prev], words[i])))
+                    take = 1 + dp[i + 1][i + 1];
+                dp[i][prev + 1] = max(skip, take);
+            }
+        }
+        return dp[0][0];
     }
 
-private:
-    int f(int i, int p, vector<string>& words, vector<vector<int>>& dp) {
-        if (i == words.size())
-            return 0;
-        if (dp[i][p + 1] != -1)
-            return dp[i][p + 1];
-        int skip = f(i + 1, p, words, dp), take = 0;
-        if ((p == -1) || (words[i].size() == words[p].size() + 1 && compare(words[p], words[i])))
-            take = 1 + f(i + 1, i, words, dp);
-        return dp[i][p + 1] = max(skip, take);
-    }
-
+private:    
     bool compare(string& shorter, string& longer) {
         if (longer.size() != shorter.size() + 1)
             return false;
