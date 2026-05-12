@@ -1,25 +1,23 @@
 class Solution {
 public:
-    bool canFinish(int n, vector<vector<int>>& prerequisites) {
-        vector<int> ans;
-        vector<int> inDegrees(n);
-        for (int i = 0; i < prerequisites.size(); i++)
-            inDegrees[prerequisites[i][0]]++;
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> graph(numCourses);
+        for(int i = 0; i < prerequisites.size(); i++) graph[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        vector<int> inEdges(numCourses, 0);
+        for(int i = 0; i < graph.size(); i++) 
+            for(int j = 0; j < graph[i].size(); j++) inEdges[graph[i][j]]++;
         queue<int> q;
-        for (int i = 0; i < n; i++)
-            if (inDegrees[i] == 0)
-                q.push(i);
-        while (!q.empty()) {
+        for(int i = 0; i < inEdges.size(); i++) if(!inEdges[i]) q.push(i);
+        while(!q.empty()) {
             int node = q.front();
-            ans.push_back(1);
             q.pop();
-            for (int i = 0; i < prerequisites.size(); i++)
-                if (prerequisites[i][1] == node) {
-                    inDegrees[prerequisites[i][0]]--;
-                    if (inDegrees[prerequisites[i][0]] == 0)
-                        q.push(prerequisites[i][0]);
+            for(int i = 0; i < graph[node].size(); i++) {
+                inEdges[graph[node][i]]--;
+                if(!inEdges[graph[node][i]]) {
+                    q.push(graph[node][i]);
                 }
+            }
         }
-        return (ans.size() == n) ? true : false;
+        return (count(inEdges.begin(), inEdges.end(), 0) == numCourses) ? true : false;
     }
 };
