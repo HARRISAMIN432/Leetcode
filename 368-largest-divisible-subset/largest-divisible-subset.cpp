@@ -11,12 +11,12 @@ public:
             }
         vector<int> ans;
         int prev = -1;
-        for (int i = 0; i < nums.size(); i++) 
-            if ((prev == -1 || nums[i] % nums[prev] == 0) &&
-                dp[i][prev + 1] == 1 + dp[i + 1][i + 1]) {
+        for (int i = 0; i < nums.size(); i++) {
+            if ((prev == -1 || nums[i] % nums[prev] == 0) && dp[i][prev + 1] == 1 + dp[i + 1][i + 1]) {
                 ans.push_back(nums[i]);
                 prev = i;
             }
+        }
         return ans;
     }
 };
