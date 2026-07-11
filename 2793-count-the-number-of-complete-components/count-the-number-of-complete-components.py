@@ -22,7 +22,7 @@ class Solution:
                             vis[neigh] = True
                             g.append(neigh)
                             q.append(neigh)
-                if sum(len(graph[node]) for node in g) // 2 == len(g) * (len(g) - 1) // 2:
+                if sum(len(graph[node]) for node in g) == len(g) * (len(g) - 1):
                     ans += 1
         return ans
                         
