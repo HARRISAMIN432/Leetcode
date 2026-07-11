@@ -22,22 +22,8 @@ class Solution:
                             vis[neigh] = True
                             g.append(neigh)
                             q.append(neigh)
-                c = True
-                for i in range(len(g)):
-                    if not c:
-                        break
-                    for j in range(len(g)):
-                        if i != j:
-                            found = False
-                            for k in graph[g[i]]:
-                                if k == g[j]:
-                                    found = True
-                                    break
-                            if not found:
-                                c = False
-                                break
-                if c:
-                    ans = ans + 1
+                if sum(len(graph[node]) for node in g) // 2 == len(g) * (len(g) - 1) // 2:
+                    ans += 1
         return ans
                         
 
